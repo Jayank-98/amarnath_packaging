@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ply_options_user,access.ply.options.user,model_ply_options,base.group_user,1,1,1,1
+jm_delivery_challan.access_process_order,access_process_order,jm_delivery_challan.model_process_order,base.group_user,1,1,1,1
+jm_delivery_challan.access_printing_note,access_printing_note,jm_delivery_challan.model_printing_note,base.group_user,1,1,1,1
+jm_delivery_challan.access_process_order_line,access_process_order_line,jm_delivery_challan.model_process_order_line,base.group_user,1,1,1,1
+jm_delivery_challan.access_dispatch_history,access_dispatch_history,jm_delivery_challan.model_dispatch_history,base.group_user,1,1,1,1
+jm_delivery_challan.access_process_order_wizard,access_process_order_wizard,jm_delivery_challan.model_process_order_wizard,base.group_user,1,1,1,1

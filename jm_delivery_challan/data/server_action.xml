@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="create_set_printing_note" model="ir.actions.server">
+        <field name="name">Set Printing Note</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">
+for rec in records.mapped('order_line').filtered(lambda l: l.printing):
+    printing_note_id = env['printing.note'].search([('name', '=', rec.printing)], limit=1)
+    if not printing_note_id:
+        printing_note_id = env['printing.note'].create({'name': rec.printing})
+    rec.write({'printing_note_id': printing_note_id.id})
+        </field>
+    </record>
+</odoo>

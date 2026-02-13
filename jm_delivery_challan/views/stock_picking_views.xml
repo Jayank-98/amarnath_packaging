@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit Form View -->
+    <record id="stock_picking_view_form_delivery_challan" model="ir.ui.view">
+        <field name="name">stock.picking.view.form.delivery.challan</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="%(jm_delivery_challan.action_report_delivery_challan)d"
+                                string="Print Delivery Challan"
+                                type="action"
+                                class="btn-primary"/>
+            </xpath>
+            <xpath expr="//header//button[@name='do_print_picking']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='location_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='location_id'][2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[1]//group[2]//label[@for='scheduled_date']" position="attributes">
+                <attribute name="string">Date</attribute>
+            </xpath>
+            <xpath expr="//group[1]//group[2]//field[@name='scheduled_date']" position="attributes">
+                <attribute name="widget">date</attribute>
+            </xpath>
+            <xpath expr="//group[1]//group[2]//field[@name='products_availability']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="show_price"/>
+<!--                <field name="process_order_id"/>-->
+<!--                <field name="allow_product_ids" widget="many2many_tags"/>-->
+            </xpath>
+            <xpath expr="//group[1]//group[1]//label[@for='partner_id'][1]" position="attributes">
+                <attribute name="string">Company Name</attribute>
+            </xpath>
+<!--            <xpath expr="//label[@for='partner_id'][2]" position="attributes">-->
+<!--                <label for="partner_id" string="Company Name" style="font-weight:bold;" invisible="picking_type_code != 'outgoing'"/>-->
+<!--            </xpath>-->
+<!--            <xpath expr="//label[@for='partner_id'][3]" position="attributes">-->
+<!--                <label for="partner_id" string="Company Name" style="font-weight:bold;" invisible="picking_type_code != 'outgoing'"/>-->
+<!--            </xpath>-->
+            <field name="picking_type_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="date_deadline" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="picking_type_id" position="before">
+                <field name="type_code"/>
+            </field>
+
+            <xpath expr="//page[@name='operations']//field[@name='move_ids']//list//field[@name='product_uom_qty']" position="before">
+                <field name="bundle" string="Packing"/>
+                <field name="packing"  force_save="1" string="Bundle" sum="Total Bundle"/>
+                <field name="loose_qty" sum="Total Loose"/>
+            </xpath>
+            <xpath expr="//page[@name='operations']//field[@name='move_ids']//list//field[@name='product_uom_qty']" position="after">
+                <field name="price_unit" column_invisible="not parent.show_price"/>
+                <field name="price_subtotal" readonly="1" column_invisible="not parent.show_price"/>
+            </xpath>
+            <xpath expr="//page[@name='operations']//field[@name='move_ids']//list//field[@name='product_uom']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='operations']//field[@name='move_ids']//list//field[@name='forecast_availability']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='operations']//field[@name='move_ids']//list//field[@name='package_ids']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='operations']//field[@name='move_ids']//list//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="string">Order Qty</attribute>
+                <attribute name="sum">Total Qty</attribute>
+            </xpath>
+            <xpath expr="//page[@name='operations']//field[@name='move_ids']//list//field[@name='quantity']" position="attributes">
+                <attribute name="sum">Total Qty</attribute>
+            </xpath>
+            <xpath expr="//page[@name='operations']//field[@name='move_ids']//list//field[@name='product_id']" position="before">
+                <field name="picking_id" readonly="1" column_invisible="1"/>
+                <field name="process_order_id" readonly="1" column_invisible="1"/>
+                <field name="allow_product_ids" readonly="1" widget="many2many_tags" column_invisible="1"/>
+                <field name="process_line_id" readonly="1" force_save="1" column_invisible="1"/>
+            </xpath>
+            <field name="location_id" position="before">
+                <field name="vehicle_number"/>
+                <field name="delivery_person"/>
+                <field name="delivery_address"/>
+            </field>
+            <button name="action_put_in_pack" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </button>
+            <page name="extra" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </page>
+            <page name="note" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </page>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_delivery_challan">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="picking">
+                <t t-call="web.html_container">
+                    <div class="page" style=" page-break-before:always;">
+                        <div style="border:1px solid black; width:100%; text-align:center; background-color:#f0f0f0;">
+                            <h1 style="padding-top:15px;">
+<!--                                <span t-esc="picking.company_id.name"/>-->
+                                SQUARE PACKAGING
+                            </h1>
+                        </div>
+                        <div style="border:1px solid black; width:100%; text-align:center; height:85px; font-size: 1 rem;">
+                            <div style="height:10px;"/>
+                            <span t-esc="picking.company_id.street"/>
+                            <br/>
+                            <span t-esc="picking.company_id.street2"/>
+                            <span t-esc="picking.company_id.city"/>
+                            <span t-esc="picking.company_id.state_id.name" t-if="picking.company_id.state_id"/>
+                            <span t-esc="picking.company_id.zip"/>
+                            <br/>
+                            <div style="height:5px;"/>
+                            <div style="width:74%; float:left; text-align:left; padding: 5px 0px 0px 5px;">
+                                <strong>E-MAIL: </strong><span t-esc="picking.company_id.email or ''"/>
+                            </div>
+                            <div style="width:24%; float:right; text-align:left; padding: 5px 0px 0px 5px;">
+                                <strong>MO: </strong><span t-esc="picking.company_id.phone or ''"/>
+                            </div>
+                        </div>
+                        <div style="border:1px solid black; width:100%; text-align:center;height: 25px; font-size: 1 rem;">
+                            <div style="width:15%; float:left; text-align:left; padding: 5px 0px 5px 5px;">
+                                Debit Memo
+                            </div>
+                            <div style="width:68%; float:left; text-align:center; padding: 5px 5px 5px 5px;">
+                                DELIVERY CHALLAN
+                            </div>
+                            <div style="width:14%; float:right; text-align:right; padding: 5px 5px 5px 5px;">
+                                Original
+                            </div>
+                        </div>
+
+                        <div style="border:1px solid black; width:100%; text-align:center;height: 200px; font-size: 1 rem;">
+                            <div style="width:59%; float:left; text-align:left; padding: 5px 0px 5px 5px;">
+                                M/S.:
+                                <span t-field="picking.partner_id"/>
+                                <p t-field="picking.delivery_address" class="mb-0" style="margin-left: 42px; no-italic: True;"/>
+                                <br/><br/>
+                                <div t-if="picking.partner_id.vat" id="partner_vat_no_shipping">
+                                    <strong>
+                                        <t t-if="picking.company_id.account_fiscal_country_id.vat_label"
+                                           t-out="picking.company_id.account_fiscal_country_id.vat_label"
+                                           id="inv_tax_id_label"/>
+                                        <t t-else="">Tax ID</t>:
+                                    </strong>
+                                    <span t-field="picking.partner_id.vat"/>
+                                </div>
+
+                            </div>
+                            <div style=" width:39.4%; float:right; text-align:left;">
+                                <div style="border-bottom:1px solid black; border-left:1px solid black; text-align:left;background-color:#f0f0f0; height:70px; margin-left:-8px;">
+                                    <div style="height:10px;"/>
+                                    <strong style="margin-left:5px; margin-right:20px; ">Challan No.</strong>
+                                    :   <span t-esc="picking.name"/>
+                                    <br/><div style="height:10px;"/>
+                                    <strong style="margin-left:5px; margin-right:74px; ">Date </strong>
+                                    :   <span t-esc="picking.scheduled_date.strftime('%d/%m/%Y') if picking.scheduled_date else ''"/>
+                                </div>
+                                <div style=" border-left:1px solid black;text-align:left; height:128px; margin-left:-8px;">
+                                    <div style="height:20px;"/>
+                                    <strong style="margin-left:5px; margin-right:20px; ">Vehicle NO</strong>
+                                    :   <span t-esc="(picking.vehicle_number or '').upper()"/>
+                                    <br/>
+                                    <strong style="margin-left:5px; margin-right:18px; ">Delivery By </strong>
+                                    :   <span t-esc="picking.delivery_person"/>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Table -->
+                        <table class="table table-sm o_main_table"
+                               style="width:100%; border:1px solid black; border-collapse: collapse; font-size:1rem; line-height:1.5;">
+                            <thead>
+                                <tr style="background-color:#f0f0f0;">
+                                    <th style="border:1px solid black; width: 6%;">SrNo</th>
+                                    <th style="border:1px solid black; width: 37%;">Product Name</th>
+                                    <th style="border:1px solid black; width: 7%;">Bundle</th>
+                                    <th style="border:1px solid black; width: 7%;">Packing</th>
+                                    <th style="border:1px solid black; width: 7%;">Loose</th>
+                                    <th style="border:1px solid black; width: 7%;">Qty</th>
+                                    <th style="border:1px solid black; width: 7%;" t-if="picking.show_price">Rate</th>
+                                    <th style="border:1px solid black; width: 7%;" t-if="picking.show_price">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="index" t-value="1"/>
+                                <t t-set="total_bundle" t-value="0"/>
+                                <t t-set="total_loose_qty" t-value="0"/>
+                                <t t-set="total_qty" t-value="0"/>
+                                <t t-set="total_amount" t-value="0"/>
+                                <tr t-foreach="picking.move_ids" t-as="line">
+                                    <td style="border-left:1px solid black; text-align:center;">
+                                        <div style="height:5px;"/>
+                                        <t t-esc="index"/>
+                                        <t t-set="index" t-value="index+1"/>
+                                    </td>
+                                    <td style="border-left:1px solid black;">
+                                        <div style="height:5px;"/>
+                                        <span t-field="line.product_id.display_name" style="padding: 5px 0px 5px 5px;"/>
+                                    </td>
+                                    <td style="border-left:1px solid black; text-align:center;">
+                                        <div style="height:5px;"/>
+                                        <span t-esc="line.packing or ''"/>
+                                        <t t-set="total_bundle" t-value="total_bundle+line.packing" t-if="line.packing"/>
+                                    </td>
+                                    <td style="border-left:1px solid black; text-align:center;">
+                                        <div style="height:5px;"/>
+                                        <span t-esc="line.bundle or ''"/>
+                                    </td>
+                                    <td style="border-left:1px solid black; text-align:center;">
+                                        <div style="height:5px;"/>
+                                        <span t-esc="line.loose_qty or ''"/>
+                                        <t t-set="total_loose_qty" t-value="total_loose_qty+line.loose_qty" t-if="line.loose_qty"/>
+                                    </td>
+                                    <td style="border-left:1px solid black; text-align:center;">
+                                        <div style="height:5px;"/>
+                                        <span t-esc="line.quantity or line.product_uom_qty"/>
+                                        <t t-set="total_qty" t-value="total_qty+line.quantity" t-if="line.quantity"/>
+                                        <t t-set="total_qty" t-value="total_qty+line.product_uom_qty" t-if="not line.quantity"/>
+                                    </td>
+                                    <td style="border-left:1px solid black; text-align:center;" t-if="picking.show_price">
+                                        <div style="height:5px;"/>
+                                        <span t-esc="line.price_unit" t-options='{"widget": "monetary", "display_currency": line.company_currency_id}'/>
+                                    </td>
+                                    <td style="border-left:1px solid black; text-align:center;" t-if="picking.show_price">
+                                        <div style="height:5px;"/>
+                                        <span t-esc="line.price_subtotal" t-options='{"widget": "monetary", "display_currency": line.company_currency_id}'/>
+                                        <t t-set="total_amount" t-value="total_amount+line.price_subtotal" t-if="line.price_subtotal"/>
+                                    </td>
+                                </tr>
+                                <tr style="background-color:#f0f0f0;border-top:1px solid black;">
+                                    <td style="border-left:1px solid black;border-bottom:1px solid black; padding: 5px 0px 5px 5px;" colspan="2" >
+                                        <strong>GSTIN No. :</strong>
+                                        <span t-esc="picking.company_id.vat or ''"/>
+                                    </td>
+                                    <td style="border-bottom:1px solid black;text-align:center;">
+                                        <span t-esc="total_bundle" t-if="total_bundle"/>
+                                    </td>
+                                    <td style="border-bottom:1px solid black;text-align:center;">
+                                    </td>
+                                    <td style="border-bottom:1px solid black;text-align:center;">
+                                        <span t-esc="total_loose_qty" t-if="total_loose_qty"/>
+                                    </td>
+                                    <td style="border-bottom:1px solid black;text-align:center;">
+                                        <span t-esc="total_qty" t-if="total_qty"/>
+                                    </td>
+                                    <td style="border-bottom:1px solid black;text-align:center;" t-if="picking.show_price">
+                                    </td>
+                                    <td style="border-bottom:1px solid black;text-align:center;" t-if="picking.show_price">
+                                        <span t-esc="total_amount"  t-options='{"widget": "monetary", "display_currency": line.company_currency_id}' t-if="total_amount"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Footer -->
+                        <div style="margin-top:0px; border:1px solid black; font-size:1 rem;">
+                            <div style="height:15px;"/>
+                            <table style="width:100%; font-size:12px;">
+                                <tr>
+                                    <td style="text-align:right;">
+                                        <strong>For,</strong>
+                                        <span t-esc="picking.company_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right;">
+                                        <img t-att-src="image_data_uri(user.report_sign)" style="max-height: 60pt;" alt="Signature" t-if="user.report_sign"/><br/><br/>
+                                        (Authorised Signatory)
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

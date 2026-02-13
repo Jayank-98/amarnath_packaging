@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- jm_custom_parffoma/report/parffoma_order_report.xml -->
+<odoo>
+    <data>
+
+        <!-- QWeb Template -->
+        <template id="report_parffoma_order_document">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page" style="font-family: Arial, sans-serif; font-size: 12px; page-break-before: always;">
+                        <div style="text-align:center;">
+                            <h1 style="text-align:center; display: inline-block; border-bottom: 1px double #000; margin-bottom:5px; width: 28%;">
+                                <span style="border-bottom: 1px double #000; text-align:center;">PARFFOMA ORDER</span>
+                            </h1>
+                        </div>
+
+                        <table style="width:100%; border:1px solid #000; border-collapse:collapse; margin-bottom:8px; text-align:center; line-height:1.2;">
+                            <tr>
+                                <td style="width:75%; border:1px solid #000; padding:1px;" colspan="2">
+                                    <b>ORDER NO :</b>
+                                </td>
+                                <td style="width:25%; border:1px solid #000; padding:1px;" colspan="2">
+                                    <span t-esc="o.order_no" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #000; padding:1px; width:22%">
+                                    <b>COMPANY NAME</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:51%;">
+                                    <span t-field="o.company_name" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:12%">
+                                    <b>DATE :</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:15%">
+                                    <span t-esc="o.date.strftime('%d-%m-%Y')" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #000; padding:1px;">
+                                    <b>PRODUCT NAME</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px;">
+                                    <span t-esc="o.product_name" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px;" rowspan="2">
+                                    <b>BOX QTY :</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px;" rowspan="2">
+                                    <span t-esc="o.box_qty" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #000; padding:1px;">
+                                    <b>PRINTING</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px;">
+                                    <span t-esc="o.printing" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- <br/>-->
+
+                        <!-- Dimension Section -->
+                        <table style="width:100%; border:1px solid #000; border-collapse:collapse; margin-bottom:8px; text-align:center; width:75%; margin-left:auto; margin-right:auto; line-height:1.2;">
+                            <tr style="background-color:#f2f2f2;">
+                                <th style="border:1px solid #000; width:25%;">B</th>
+                                <th style="border:1px solid #000; width:25%;">H</th>
+                                <th style="border:1px solid #000; width:25%;">L</th>
+                                <th style="border:1px solid #000; width:25%;">F</th>
+                            </tr>
+                            <tr style="line-height:1.3;">
+                                <td style="border:1px solid #000;">
+                                    <span t-esc="o.b_value" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000;">
+                                    <span t-esc="o.h_value" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000;">
+                                    <span t-esc="o.l_value" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000;">
+                                    <span t-esc="o.f_value" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- <br/>-->
+
+                        <!-- Paper Details -->
+                        <table style="width:100%; border:1px solid #000; border-collapse:collapse; margin-bottom:8px; line-height:1.2; text-align: center;">
+                            <tr>
+                                <td style="border:1px solid #000; padding:1px; width:22%;">
+                                    <b>PAPER DECAL :</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:28%;">
+                                    <span t-esc="o.paper_decal" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:23%;">
+                                    <b>PAPER CUTTING :</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:27%;">
+                                    <span t-esc="o.paper_cutting" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #000; padding:1px; width:22%;">
+                                    <b>TOP PAPER QTY :</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:28%;">
+                                    <span t-esc="o.top_paper_qty" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:23%;">
+                                    <b>GSM/BF :</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:27%;">
+                                    <span t-esc="o.top_paper_gsm" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #000; padding:1px; width:22%;">
+                                    <b>TOP LINER QTY :</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:28%;">
+                                    <span t-esc="o.top_liner_qty" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:23%;">
+                                    <b>GSM/BF :</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:27%;">
+                                    <span t-esc="o.top_liner_gsm" style="font-size:1rem;"/>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #000; padding:1px; width:22%;">
+                                    <b>BOTTOM LINER QTY :</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:28%;">
+                                    <span t-esc="o.bottom_liner_qty" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:23%;">
+                                    <b>GSM/BF :</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:27%;">
+                                    <span t-esc="o.bottom_liner_gsm" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #000; padding:1px;">
+                                    <b>NOTE :</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px;" colspan="2">
+                                    <span t-esc="o.note" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:27%;">
+                                    <b>
+                                        <span t-esc="o.ply_type" style="font-size:1rem;"/>
+                                    </b>
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- Weight Section -->
+                        <table style="width:100%; border:1px solid #000; border-collapse:collapse; margin-bottom:8px; text-align:center; width:75%; margin-left:auto; margin-right:auto; line-height:1.2;">
+                            <tr style="background-color:#f2f2f2;">
+                                <th style="border:1px solid #000; width:33%;">Top Weight</th>
+                                <th style="border:1px solid #000; width:33%;">Liner Weight</th>
+                                <th style="border:1px solid #000; width:33%;">Total Weight</th>
+                            </tr>
+                            <tr style="line-height:1.3;">
+                                <td style="border:1px solid #000;">
+                                    <span t-esc="'%.2f' % (o.total_lwc_weight or 0.0)" style="font-size:1rem;"/> Kg
+                                </td>
+                                <td style="border:1px solid #000;">
+                                    <span t-esc="'%.2f' % (o.total_natural_weight or 0.0)" style="font-size:1rem;"/> Kg
+                                </td>
+                                <td style="border:1px solid #000;">
+                                    <span t-esc="'%.2f' % (o.total_weight or 0.0)" style="font-size:1rem;"/> Kg
+                                </td>
+                            </tr>
+                        </table>
+
+                        <hr style="width:110%; border: dashed 1px black; margin-top:18px; margin-left: -50px !important; padding-left: -50px !important;"/>
+                        <h1 style="text-align:center; text-decoration: underline; margin-bottom:4px; margin-top:15px;">
+                            CORRUGATION MACHINE
+                        </h1>
+                        <table style="width:100%; border:1px solid #000; border-collapse:collapse; margin-bottom:8px; text-align:center; line-height:1.2;">
+                            <tr>
+                                <td style="width:75%; border:1px solid #000; padding:1px;" colspan="2">
+                                    <b>ORDER NO :</b>
+                                </td>
+                                <td style="width:25%; border:1px solid #000; padding:1px;" colspan="2">
+                                    <span t-esc="o.order_no" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #000; padding:1px; width:22%">
+                                    <b>COMPANY NAME</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:51%;">
+                                    <span t-field="o.company_name" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:12%">
+                                    <b>DATE :</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:15%">
+                                    <span t-esc="o.date.strftime('%d-%m-%Y')" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #000; padding:1px;">
+                                    <b>PRODUCT NAME</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px;">
+                                    <span t-esc="o.product_name" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px;">
+                                    <b>BOX QTY :</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px;">
+                                    <span t-esc="o.box_qty" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- <br/>-->
+                        <table style="width:100%; border:1px solid #000; border-collapse:collapse; margin-bottom:8px; text-align:center; width:75%; margin-left:auto; margin-right:auto; line-height:1.2;">
+                            <tr style="background-color:#f2f2f2;">
+                                <th style="border:1px solid #000; width:25%; padding-top:4px;">Paper Decal</th>
+                                <th style="border:1px solid #000; width:25%; padding-top:4px;">Paper Cutting</th>
+                                <th style="border:1px solid #000; width:25%; padding-top:4px;">TOP GSM/BF</th>
+                                <th style="border:1px solid #000; width:25%; padding-top:4px;">BOTTOM GSM/BF</th>
+                                <th style="border:1px solid #000; width:25%; padding-top:4px;">PLY</th>
+                            </tr>
+                            <tr style="line-height:1.2;">
+                                <td style="border:1px solid #000; padding-top:4px;" >
+                                    <span t-esc="o.paper_decal" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding-top:4px;">
+                                    <span t-esc="o.paper_cutting" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding-top:4px;">
+                                    <span t-esc="o.top_liner_gsm" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding-top:4px;">
+                                    <span t-esc="o.bottom_liner_gsm" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding-top:4px;">
+                                    <span t-esc="o.ply_type" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr style="line-height:1.2;">
+                                <td style="border:1px solid #000; width:25%; padding-top:1px;background-color:#f2f2f2;padding-top:4px;">
+                                    <strong>Liner Qty.</strong>
+                                </td>
+                                <td style="border:1px solid #000; padding-top:4px;" colspan="4">
+                                    <span t-esc="o.bottom_liner_qty" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+
+                        </table>
+                        <hr style="width:110%; border: dashed 1px black; margin-top:18px; margin-left: -50px !important; padding-left: -50px !important;"/>
+                        <h1 style="text-align:center; text-decoration: underline; margin-bottom:4px; margin-top:15px;">
+                            PAPER CUTTING
+                        </h1>
+                        <table style="width:100%; border:1px solid #000; border-collapse:collapse; margin-bottom:8px; text-align:center; line-height:1.2;">
+                            <tr>
+                                <td style="width:75%; border:1px solid #000; padding:1px;" colspan="2">
+                                    <b>ORDER NO :</b>
+                                </td>
+                                <td style="width:25%; border:1px solid #000; padding:1px;" colspan="2">
+                                    <span t-esc="o.order_no" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #000; padding:1px; width:22%">
+                                    <b>COMPANY NAME</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:51%;">
+                                    <span t-field="o.company_name" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:12%">
+                                    <b>DATE :</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:15%">
+                                    <span t-esc="o.date.strftime('%d-%m-%Y')" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #000; padding:1px;">
+                                    <b>PRODUCT NAME</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px;">
+                                    <span t-esc="o.product_name" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px;" rowspan="2">
+                                    <b>BOX QTY :</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px;" rowspan="2">
+                                    <span t-esc="o.box_qty" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #000; padding:1px;">
+                                    <b>PRINTING</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px;">
+                                    <span t-esc="o.printing" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- <br/>-->
+                        <table style="width:100%; border:1px solid #000; border-collapse:collapse; margin-bottom:8px; text-align:center; width:75%; margin-left:auto; margin-right:auto; line-height:1.2;">
+                            <tr style="background-color:#f2f2f2;">
+                                <th style="border:1px solid #000; width:25%; padding-top:4px;">Paper Decal</th>
+                                <th style="border:1px solid #000; width:25%; padding-top:4px;">Paper Cutting</th>
+                                <th style="border:1px solid #000; width:25%; padding-top:4px;">GSM/BF</th>
+                                <th style="border:1px solid #000; width:25%; padding-top:4px;">PLY</th>
+                            </tr>
+                            <tr style="line-height:1.2;">
+                                <td style="border:1px solid #000; padding-top:4px;" >
+                                    <span t-esc="o.paper_decal" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding-top:4px;">
+                                    <span t-esc="o.paper_cutting" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding-top:4px;">
+                                    <span t-esc="o.top_paper_gsm" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding-top:4px;">
+                                    <span t-esc="o.ply_type" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr style="line-height:1.2;">
+                                <td style="border:1px solid #000; width:25%; padding-top:1px;background-color:#f2f2f2;padding-top:4px;">
+                                    <strong>Paper Qty.</strong>
+                                </td>
+                                <td style="border:1px solid #000; padding-top:4px;" colspan="3">
+                                    <span t-esc="o.top_paper_qty" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                        </table>
+<!--                        <hr style="width:110%; border: dashed 1px black; margin-top:18px; margin-left: -50px !important; padding-left: -50px !important;"/>-->
+<!--                        <h1 style="text-align:center; text-decoration: underline; margin-bottom:4px; margin-top:15px;">-->
+<!--                            PRINTING MACHINE-->
+<!--                        </h1>-->
+<!--                        <table style="width:100%; border:1px solid #000; border-collapse:collapse; margin-bottom:8px; text-align:center; line-height:1.2;">-->
+<!--                            <tr>-->
+<!--                                <td style="width:75%; border:1px solid #000; padding:1px;" colspan="2">-->
+<!--                                    <b>ORDER NO :</b>-->
+<!--                                </td>-->
+<!--                                <td style="width:25%; border:1px solid #000; padding:1px;" colspan="2">-->
+<!--                                    <span t-esc="o.order_no" style="font-size:1rem;"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td style="border:1px solid #000; padding:1px; width:22%">-->
+<!--                                    <b>COMPANY NAME</b>-->
+<!--                                </td>-->
+<!--                                <td style="border:1px solid #000; padding:1px; width:51%;">-->
+<!--                                    <span t-field="o.company_name" style="font-size:1rem;"/>-->
+<!--                                </td>-->
+<!--                                <td style="border:1px solid #000; padding:1px; width:12%">-->
+<!--                                    <b>DATE :</b>-->
+<!--                                </td>-->
+<!--                                <td style="border:1px solid #000; padding:1px; width:15%">-->
+<!--                                    <span t-esc="o.date.strftime('%d-%m-%Y')" style="font-size:1rem;"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td style="border:1px solid #000; padding:1px;">-->
+<!--                                    <b>PRODUCT NAME</b>-->
+<!--                                </td>-->
+<!--                                <td style="border:1px solid #000; padding:1px;">-->
+<!--                                    <span t-esc="o.product_name" style="font-size:1rem;"/>-->
+<!--                                </td>-->
+<!--                                <td style="border:1px solid #000; padding:1px;" rowspan="2">-->
+<!--                                    <b>BOX QTY :</b>-->
+<!--                                </td>-->
+<!--                                <td style="border:1px solid #000; padding:1px;" rowspan="2">-->
+<!--                                    <span t-esc="o.box_qty" style="font-size:1rem;"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td style="border:1px solid #000; padding:1px;">-->
+<!--                                    <b>PRINTING</b>-->
+<!--                                </td>-->
+<!--                                <td style="border:1px solid #000; padding:1px;">-->
+<!--                                    <span t-esc="o.printing" style="font-size:1rem;"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                        </table>-->
+                        <!-- <br/>-->
+
+                        <!-- Dimension Section -->
+                        <table style="width:100%; border:1px solid #000; border-collapse:collapse; margin-bottom:8px; text-align:center; width:75%; margin-left:auto; margin-right:auto; line-height:1.2;">
+                            <tr style="background-color:#f2f2f2;">
+                                <th style="border:1px solid #000; width:25%;">B</th>
+                                <th style="border:1px solid #000; width:25%;">H</th>
+                                <th style="border:1px solid #000; width:25%;">L</th>
+                                <th style="border:1px solid #000; width:25%;">F</th>
+                            </tr>
+                            <tr style="line-height:1.3;">
+                                <td style="border:1px solid #000;">
+                                    <span t-esc="o.b_value" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000;">
+                                    <span t-esc="o.h_value" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000;">
+                                    <span t-esc="o.l_value" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000;">
+                                    <span t-esc="o.f_value" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- <br/>-->
+                        <table style="width:100%; border:1px solid #000; border-collapse:collapse; margin-bottom:8px; text-align:center; line-height:1.2;">
+                            <tr>
+                                <td style="border:1px solid #000; width:20%; padding-top:4px;">
+                                    <b>PAPER DECAL</b>
+                                </td>
+                                <td style="border:1px solid #000; width:20%; padding-top:4px;">
+                                    <span t-field="o.paper_decal" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; width:20% padding-top:4px;">
+                                    <b>PAPER CUTTING</b>
+                                </td>
+                                <td style="border:1px solid #000; width:40% padding-top:4px;">
+                                    <span t-esc="o.paper_cutting" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding-top:4px;">
+                                    <b>PAPER QTY.</b>
+                                </td>
+                                <td style="border:1px solid #000; padding-top:4px;">
+                                    <span t-esc="o.top_paper_qty" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                
+                                <td style="border:1px solid #000; padding-top:4px;">
+                                    <b>NOTE</b>
+                                </td>
+                                <td style="border:1px solid #000; padding-top:4px;" colspan="5">
+                                    <span t-esc="o.note" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <hr style="width:110%; border: dashed 1px black; margin-top:18px; margin-left: -50px !important; padding-left: -50px !important;"/>
+                        <h1 style="text-align:center; text-decoration: underline; margin-bottom:4px; margin-top:15px;">
+                            PASTING MACHINE
+                        </h1>
+
+                        <table style="width:100%; border:1px solid #000; border-collapse:collapse; margin-bottom:8px; text-align:center; line-height:1.2;">
+                            <tr>
+                                <td style="width:75%; border:1px solid #000; padding:1px;" colspan="2">
+                                    <b>ORDER NO :</b>
+                                </td>
+                                <td style="width:25%; border:1px solid #000; padding:1px;" colspan="2">
+                                    <span t-esc="o.order_no" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #000; padding:1px; width:22%">
+                                    <b>COMPANY NAME</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:51%;">
+                                    <span t-field="o.company_name" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:12%">
+                                    <b>DATE :</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px; width:15%">
+                                    <span t-esc="o.date.strftime('%d-%m-%Y')" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #000; padding:1px;">
+                                    <b>PRODUCT NAME</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px;">
+                                    <span t-esc="o.product_name" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px;" rowspan="2">
+                                    <b>BOX QTY :</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px;" rowspan="2">
+                                    <span t-esc="o.box_qty" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #000; padding:1px;">
+                                    <b>PRINTING</b>
+                                </td>
+                                <td style="border:1px solid #000; padding:1px;">
+                                    <span t-esc="o.printing" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- <br/>-->
+
+                        <!-- Dimension Section -->
+                        <table style="width:100%; border:1px solid #000; border-collapse:collapse; margin-bottom:8px; text-align:center; width:75%; margin-left:auto; margin-right:auto; line-height:1.2;">
+                            <tr style="background-color:#f2f2f2;">
+                                <th style="border:1px solid #000; width:25%;">B</th>
+                                <th style="border:1px solid #000; width:25%;">H</th>
+                                <th style="border:1px solid #000; width:25%;">L</th>
+                                <th style="border:1px solid #000; width:25%;">F</th>
+                            </tr>
+                            <tr style="line-height:1.3;">
+                                <td style="border:1px solid #000;">
+                                    <span t-esc="o.b_value" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000;">
+                                    <span t-esc="o.h_value" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000;">
+                                    <span t-esc="o.l_value" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000;">
+                                    <span t-esc="o.f_value" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- <br/>-->
+                        <table style="width:100%; border:1px solid #000; border-collapse:collapse; margin-bottom:8px; text-align:center; line-height:1.2;">
+                            <tr>
+                                <td style="border:1px solid #000; width:20%; padding-top:4px;">
+                                    <b>PAPER DECAL</b>
+                                </td>
+                                <td style="border:1px solid #000; width:20%; padding-top:4px;">
+                                    <span t-field="o.paper_decal" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; width:20% padding-top:4px;">
+                                    <b>PAPER CUTTING</b>
+                                </td>
+                                <td style="border:1px solid #000; width:40% padding-top:4px;">
+                                    <span t-esc="o.paper_cutting" style="font-size:1rem;"/>
+                                </td>
+                                <td style="border:1px solid #000; padding-top:4px;">
+                                    <b>PLY</b>
+                                </td>
+                                <td style="border:1px solid #000; padding-top:4px;">
+                                    <span t-esc="o.ply_type" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #000; padding-top:4px;">
+                                    <b>QUANTITY</b>
+                                </td>
+                                <td style="border:1px solid #000; padding-top:4px;" colspan="5">
+                                    <span t-esc="o.top_liner_qty" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #000; padding-top:4px;">
+                                    <b>NOTE</b>
+                                </td>
+                                <td style="border:1px solid #000; padding-top:4px;" colspan="5">
+                                    <span t-esc="o.note" style="font-size:1rem;"/>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                    </div>
+                </t>
+            </t>
+        </template>
+
+
+        <record id="parfomma_paperformat" model="report.paperformat">
+            <field name="name">A5 (A4/2)</field>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_left">10</field>
+            <field name="margin_right">10</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">10</field>
+            <field name="dpi">90</field>
+            <field name="css_margins" eval="True"/>
+        </record>
+
+        <!-- Report Action -->
+        <record id="action_report_parffoma_order" model="ir.actions.report">
+            <field name="name">Parffoma Order Report</field>
+            <field name="model">parffoma.order</field>
+            <field name="paperformat_id" ref="parfomma_paperformat"/>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">jm_parformma_custom.report_parffoma_order_document</field>
+            <field name="report_file">jm_parformma_custom.report_parffoma_order_document</field>
+            <field name="binding_model_id" ref="model_parffoma_order"/>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">'Parffoma_Order_%s' % (object.order_no)</field>
+        </record>
+
+
+    </data>
+</odoo>

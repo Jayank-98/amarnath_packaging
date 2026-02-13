@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ========================= -->
+    <!-- Tree (List) View -->
+    <!-- ========================= -->
+    <record id="view_paper_type_tree" model="ir.ui.view">
+        <field name="name">paper.type.tree</field>
+        <field name="model">paper.type</field>
+        <field name="arch" type="xml">
+            <list string="Paper Types">
+                <field name="name"/>
+                <field name="top_paper_color"/>
+                <field name="top_liner_color"/>
+                <field name="bottom_liner_color"/>
+                <field name="paper_decal"/>
+                <field name="paper_cutting"/>
+                <field name="top_paper_gsm"/>
+                <field name="top_liner_gsm"/>
+                <field name="bottom_liner_gsm"/>
+                <field name="box_per_sheet"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- Form View -->
+    <!-- ========================= -->
+    <record id="view_paper_type_form" model="ir.ui.view">
+        <field name="name">paper.type.form</field>
+        <field name="model">paper.type</field>
+        <field name="arch" type="xml">
+            <form string="Paper Type">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="top_paper_color"/>
+                            <field name="top_liner_color"/>
+                            <field name="bottom_liner_color"/>
+                            <field name="paper_decal"/>
+                            <field name="paper_cutting"/>
+                        </group>
+                        <group>
+                            <field name="top_paper_gsm"/>
+                            <field name="top_liner_gsm"/>
+                            <field name="bottom_liner_gsm"/>
+                            <field name="box_per_sheet"/>
+                            <field name="formula"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- Search View -->
+    <!-- ========================= -->
+    <record id="view_paper_type_search" model="ir.ui.view">
+        <field name="name">paper.type.search</field>
+        <field name="model">paper.type</field>
+        <field name="arch" type="xml">
+            <search string="Search Paper Type">
+                <field name="name"/>
+                <field name="top_paper_gsm"/>
+                <field name="bottom_liner_gsm"/>
+
+<!--                <filter string="Has Formula"-->
+<!--                        domain="[('formula','!=',0)]"/>-->
+
+                <group>
+                    <filter string="Top Paper GSM"
+                            name="group_by_top_paper"
+                            context="{'group_by':'top_paper_gsm'}"/>
+                    <filter string="Bottom Liner GSM"
+                            name="group_by_bottom_liner"
+                            context="{'group_by':'bottom_liner_gsm'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- Action -->
+    <!-- ========================= -->
+    <record id="action_paper_type" model="ir.actions.act_window">
+        <field name="name">Paper Types</field>
+        <field name="res_model">paper.type</field>
+        <field name="view_mode">list,form,search</field>
+        <field name="search_view_id" ref="view_paper_type_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first paper type
+            </p>
+        </field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- Menu Items -->
+    <!-- ========================= -->
+    <menuitem id="menu_paper_type"
+              name="Paper Types"
+              parent="jm_parformma_custom.menu_parffoma_root"
+              action="action_paper_type"
+              sequence="100"/>
+
+</odoo>

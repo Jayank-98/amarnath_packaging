@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menu -->
+    <menuitem id="sale_order_menu"
+              name="Orders"
+              action="sale.action_quotations_with_onboarding"
+              parent="jm_parformma_custom.menu_parffoma_root"
+              sequence="1">
+<!--        <menuitem id="menu_sale_quotations"-->
+<!--                  action="sale.action_quotations_with_onboarding"-->
+<!--                  groups="sales_team.group_sale_salesman"-->
+<!--                  sequence="10"/>-->
+
+<!--        <menuitem id="menu_sale_order"-->
+<!--                  name="Orders"-->
+<!--                  action="sale.action_orders"-->
+<!--                  groups="sales_team.group_sale_salesman"-->
+<!--                  sequence="20"/>-->
+    </menuitem>
+
+<!--    <menuitem id="menu_delivery_challan"-->
+<!--              name="Delivery Challan"-->
+<!--              parent="jm_parformma_custom.menu_parffoma_root"-->
+<!--              action="stock.method_action_picking_tree_outgoing"-->
+<!--              sequence="20"/>-->
+
+    <record id="sale_order_list_inherit_delivery_challan" model="ir.ui.view">
+        <field name="name">sale.order.list.inherit.delivery.challan</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="activity_ids" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </field>
+            <field name="team_id" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </field>
+            <field name="amount_untaxed" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </field>
+            <field name="amount_tax" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </field>
+            <field name="amount_total" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </field>
+            <field name="tag_ids" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </field>
+            <field name="commitment_date" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </field>
+            <field name="expected_date" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </field>
+            <field name="validity_date" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </field>
+            <field name="invoice_status" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </field>
+            <field name="client_order_ref" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </field>
+            <field name="user_id" position="after">
+                <field name="total_order"/>
+                <field name="total_delivered"/>
+                <field name="total_pending"/>
+                <field name="delivery_status_cust"
+                       decoration-success="delivery_status_cust == 'full'"
+                       decoration-info="delivery_status_cust == 'draft'"
+                       decoration-warning="delivery_status_cust == 'partial'"
+                       decoration-muted="delivery_status_cust == 'started'"
+                       widget="badge"/>
+                <field name="parformma_status"
+                       decoration-success="parformma_status == 'done'"
+                       decoration-info="parformma_status == 'created'"
+                       decoration-warning="parformma_status == 'processed'"
+                       decoration-danger="parformma_status == 'not_created'"
+                       widget="badge"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="sale_order_form_inherit_delivery_challan" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.delivery.challan</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+<!--            <chatter position="attributes">-->
+            <chatter position="attributes">
+                <attribute name="invisible">1</attribute>
+            </chatter>
+            <button name="action_view_invoice" position="before">
+                <button name="action_open_parformma_orders"
+                        string="Parformma Orders"
+                        type="object"
+                        class="btn-primary oe_stat_button"
+                        invisible="not parfomma_orders_count">
+                    (<field name="parfomma_orders_count" widget="statinfo" class="oe_stat_info" nolabel="1"/>) Parformma
+                </button>
+            </button>
+            <field name="partner_invoice_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="partner_shipping_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="partner_invoice_id" position="after">
+                <field name="delivery_address"/>
+            </field>
+            <field name="pricelist_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="payment_term_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="validity_date" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="payment_term_id" position="after">
+                <field name="total_order"/>
+                <field name="total_delivered"/>
+                <field name="total_pending"/>
+                <field name="parformma_status"
+                       decoration-success="parformma_status == 'done'"
+                       decoration-info="parformma_status == 'created'"
+                       decoration-warning="parformma_status == 'processed'"
+                       decoration-danger="parformma_status == 'not_created'"
+                       widget="badge"/>
+            </field>
+            <button id="create_invoice" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </button>
+            <button id="create_invoice_percentage" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </button>
+            <button name="action_preview_sale_order" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </button>
+            <button id="send_proforma" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </button>
+            <button id="quotation_send_primary" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </button>
+            <button id="quotation_send" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </button>
+            <button name="action_view_delivery" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </button>
+            <group name="note_group" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </group>
+            <page name="other_information" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </page>
+            <page name="customer_signature" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </page>
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_template_id']" position="after">
+                <field name="printing" column_invisible="1"/>
+                <field name="printing_note_id"/>
+                <field name="ply_option_id"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='price_unit']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='price_subtotal']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='qty_invoiced']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='tax_ids']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='price_total']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='price_total'][2]" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='customer_lead']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='qty_delivered']" position="after">
+                <field name="pending_qty" sum="Total Pending"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="sum">Total Delivered</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='qty_delivered']" position="attributes">
+                <attribute name="sum">Total Order</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list" position="inside">
+                <button name="action_open_parformma_orders" type="object" class="btn btn-primary" string="Parformma" invisible="not parformma_order_id"/>
+                <button name="create_parforma_orders" type="object" class="btn btn-primary" string="Create Parformma" invisible="parformma_order_id"/>
+                <field name="parformma_status"
+                       decoration-success="parformma_status == 'done'"
+                       decoration-info="parformma_status == 'created'"
+                       decoration-warning="parformma_status == 'processed'"
+                       decoration-danger="parformma_status == 'not_created'"
+                       widget="badge"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

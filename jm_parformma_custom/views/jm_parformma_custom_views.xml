@@ -1,0 +1,147 @@
+<!-- jm_custom_parffoma/views/parffoma_order_view.xml -->
+<odoo>
+    <data>
+        <!-- List View -->
+        <record id="view_parffoma_order_list" model="ir.ui.view">
+            <field name="name">parffoma.order.list</field>
+            <field name="model">parffoma.order</field>
+            <field name="arch" type="xml">
+                <list string="Parffoma Orders">
+                    <field name="date"/>
+                    <field name="order_no"/>
+                    <field name="company_name"/>
+                    <field name="product_name"/>
+                    <field name="box_qty" string="Box Qty."/>
+                    <field name="printing"/>
+                    <field name="ply_type"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_parffoma_order_search" model="ir.ui.view">
+            <field name="name">parffoma.order.search</field>
+            <field name="model">parffoma.order</field>
+            <field name="arch" type="xml">
+                <search string="Parffoma Orders">
+                    <field name="order_no"/>
+                    <field name="company_name"/>
+                    <field name="product_name"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_parffoma_order_form" model="ir.ui.view">
+            <field name="name">parffoma.order.form</field>
+            <field name="model">parffoma.order</field>
+            <field name="arch" type="xml">
+                <form string="Parffoma Order">
+                    <header>
+                        <button name="%(jm_parformma_custom.action_report_parffoma_order)d"
+                                string="Print Parffoma Order"
+                                type="action"
+                                class="btn-primary"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="order_no"/>
+                            <h1>
+                                <field name="order_no" placeholder="e.g. PO-0001" readonly="1" force_save="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="company_name"/>
+                                <field name="product_name"/>
+                                <field name="printing"/>
+                            </group>
+                            <group>
+                                <field name="date"/>
+                                <field name="box_qty"/>
+                                <field name="ply_type"/>
+                            </group>
+                        </group>
+
+                        <group string="Size Details">
+                            <group>
+                                <field name="l_value"/>
+                                <field name="b_value"/>
+                            </group>
+                            <group>
+                                <field name="h_value"/>
+                                <field name="f_value"/>
+                            </group>
+                        </group>
+
+                        <group string="Paper Details">
+                            <group>
+                                <field name="paper_id" context="{'update_paper_details': True}"/>
+                                <field name="box_per_sheet"/>
+                            </group>
+                            <group>
+                                <field name="top_paper_color" force_save="1"/>
+                                <field name="top_liner_color" force_save="1"/>
+                                <field name="bottom_liner_color" force_save="1"/>
+                            </group>
+                            <group>
+                                <field name="paper_decal"/>
+                            </group>
+                            <group>
+                                <field name="paper_cutting"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="top_paper_qty"/>
+                                <field name="top_liner_qty"/>
+                                <field name="bottom_liner_qty"/>
+                            </group>
+                            <group>
+                                <field name="top_paper_gsm"/>
+                                <field name="top_liner_gsm"/>
+                                <field name="bottom_liner_gsm"/>
+                            </group>
+                        </group>
+                        <group string="Weight Details">
+                            <group string="Top Wight">
+                                <field name="lwc_weight" readonly="1" force_save="1"/>
+                                <field name="total_lwc_weight" readonly="1" force_save="1"/>
+                            </group>
+                            <group string="Liner Weight">
+                                <field name="top_weight" readonly="1" force_save="1"/>
+                                <field name="bottom_weight" readonly="1" force_save="1"/>
+                                <field name="total_natural_weight" readonly="1" force_save="1"/>
+                            </group>
+                            <group string="Total Weight">
+                                <field name="per_box_weight" readonly="1" force_save="1"/>
+                                <field name="total_weight" readonly="1" force_save="1"/>
+                            </group>
+                        </group>
+
+                        <group string="Other">
+                            <field name="note"/>
+                            <field name="full_description" readonly="1"/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_parffoma_order" model="ir.actions.act_window">
+            <field name="name">D&amp;G Company</field>
+            <field name="res_model">parffoma.order</field>
+            <field name="view_mode">list,form,search</field>
+        </record>
+
+        <!-- Menu Items -->
+        <menuitem id="menu_parffoma_root" name="D&amp;G Company" sequence="1"/>
+
+        <menuitem id="menu_parffoma_order"
+                  name="Parffoma"
+                  parent="menu_parffoma_root"
+                  action="action_parffoma_order"/>
+    </data>
+</odoo>

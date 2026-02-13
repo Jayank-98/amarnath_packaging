@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View -->
+    <record id="view_dispatch_history_list" model="ir.ui.view">
+        <field name="name">dispatch.history.list</field>
+        <field name="model">dispatch.history</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false" default_order="id desc">
+                <field name="partner_id" width="25%"/>
+                <field name="product_id" width="25%"/>
+                <field name="dispatch_date" width="13%"/>
+                <field name="opening_qty" width="13%"/>
+                <field name="quantity" width="12%"/>
+                <field name="closing_qty" width="13%"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_dispatch_history_search" model="ir.ui.view">
+        <field name="name">dispatch.history.search</field>
+        <field name="model">dispatch.history</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="dispatch_date"/>
+                <filter string="Dispatch Date" name="filter_dispatch_date" date="dispatch_date"/>
+
+                <filter name="group_partner" string="Company"
+                        context="{'group_by':'partner_id'}"/>
+                <filter name="group_product" string="Product"
+                        context="{'group_by':'product_id'}"/>
+                <filter name="group_dispatch_date"
+                        string="Dispatch Date"
+                        context="{'group_by':'dispatch_date'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_dispatch_history" model="ir.actions.act_window">
+        <field name="name">Dispatch History</field>
+        <field name="res_model">dispatch.history</field>
+        <field name="view_mode">list,search</field>
+        <field name="view_id" ref="view_dispatch_history_list"/>
+        <field name="search_view_id" ref="view_dispatch_history_search"/>
+        <field name="context">{'search_default_group_partner': 1}</field>
+        <field name="domain">[]</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_dispatch_history"
+              name="History"
+              parent="jm_parformma_custom.menu_parffoma_root"
+              sequence="30"
+              action="action_dispatch_history"/>
+</odoo>
