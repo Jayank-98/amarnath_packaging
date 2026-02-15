@@ -27,6 +27,22 @@ class SaleOrder(models.Model):
         ('processed', 'Processed'),
         ('done', 'Done'),
     ], string='Parformma Status', compute='_compute_parformma_status', store=True)
+    manufacturing_type = fields.Selection([
+        ('single_liner', 'Single Liner'),
+        ('double_liner', 'Double Liner'),
+        ('both', 'Both')], string='Manufacturing Type')
+
+    @api.model
+    def default_get(self, fields):
+        """If we're creating a new account through a many2one, there are chances that we typed the account code
+        instead of its name. In that case, switch both fields values.
+        """
+        defaults = super(SaleOrder, self).default_get(fields)
+        if 'manufacturing_type' in fields:
+            default_manufacturing_type = self.env['ir.config_parameter'].sudo().get_param(
+                'jm_parformma_custom.manufacturing_type')
+            defaults['manufacturing_type'] = default_manufacturing_type
+        return defaults
 
     @api.depends('order_line.parformma_status')
     def _compute_parformma_status(self):
@@ -197,6 +213,21 @@ class SaleOrderLine(models.Model):
         default='not_created',store=True, copy=False)
     printing = fields.Char(string='Printing', tracking=True)
     printing_note_id = fields.Many2one('printing.note', string='Printing Note', tracking=True)
+    manufacturing_type = fields.Selection([
+        ('single_liner', 'Single Liner'),
+        ('double_liner', 'Double Liner')], string='Manufacturing Type')
+
+    @api.model
+    def default_get(self, fields):
+        """If we're creating a new account through a many2one, there are chances that we typed the account code
+        instead of its name. In that case, switch both fields values.
+        """
+        defaults = super(SaleOrderLine, self).default_get(fields)
+        if 'manufacturing_type' in fields:
+            default_manufacturing_type = self.env['ir.config_parameter'].sudo().get_param(
+                'jm_parformma_custom.manufacturing_type')
+            defaults['manufacturing_type'] = default_manufacturing_type if default_manufacturing_type != 'both' else ''
+        return defaults
 
     @api.depends('product_uom_qty', 'qty_delivered')
     def _compute_pending_qty(self):
@@ -231,6 +262,7 @@ class SaleOrderLine(models.Model):
                 'box_qty': line.product_uom_qty,
                 'top_paper_qty': line.product_uom_qty,
                 'top_liner_qty': line.product_uom_qty,
+                'manufacturing_type': line.manufacturing_type,
                 'bottom_liner_qty': line.product_uom_qty,
                 'ply_option_id': line.ply_option_id.id if line.ply_option_id else False,
                 'sale_order_line_id': line.id,

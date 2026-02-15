@@ -74,6 +74,7 @@ class ParffomaOrder(models.Model):
     total_lwc_weight = fields.Float(string="Total Top Weight", tracking=True)
     total_natural_weight = fields.Float(string="Total Liner Weight", tracking=True)
     box_per_sheet = fields.Float(string='Box Per Sheet', tracking=True)
+    print_weight = fields.Boolean(string='Print Weight', tracking=True)
     manufacturing_type = fields.Selection([
         ('single_liner', 'Single Liner'),
         ('double_liner', 'Double Liner'),

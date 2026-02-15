@@ -6,23 +6,23 @@
               action="sale.action_quotations_with_onboarding"
               parent="jm_parformma_custom.menu_parffoma_root"
               sequence="1">
-<!--        <menuitem id="menu_sale_quotations"-->
-<!--                  action="sale.action_quotations_with_onboarding"-->
-<!--                  groups="sales_team.group_sale_salesman"-->
-<!--                  sequence="10"/>-->
+        <!--        <menuitem id="menu_sale_quotations"-->
+        <!--                  action="sale.action_quotations_with_onboarding"-->
+        <!--                  groups="sales_team.group_sale_salesman"-->
+        <!--                  sequence="10"/>-->
 
-<!--        <menuitem id="menu_sale_order"-->
-<!--                  name="Orders"-->
-<!--                  action="sale.action_orders"-->
-<!--                  groups="sales_team.group_sale_salesman"-->
-<!--                  sequence="20"/>-->
+        <!--        <menuitem id="menu_sale_order"-->
+        <!--                  name="Orders"-->
+        <!--                  action="sale.action_orders"-->
+        <!--                  groups="sales_team.group_sale_salesman"-->
+        <!--                  sequence="20"/>-->
     </menuitem>
 
-<!--    <menuitem id="menu_delivery_challan"-->
-<!--              name="Delivery Challan"-->
-<!--              parent="jm_parformma_custom.menu_parffoma_root"-->
-<!--              action="stock.method_action_picking_tree_outgoing"-->
-<!--              sequence="20"/>-->
+    <!--    <menuitem id="menu_delivery_challan"-->
+    <!--              name="Delivery Challan"-->
+    <!--              parent="jm_parformma_custom.menu_parffoma_root"-->
+    <!--              action="stock.method_action_picking_tree_outgoing"-->
+    <!--              sequence="20"/>-->
 
     <record id="sale_order_list_inherit_delivery_challan" model="ir.ui.view">
         <field name="name">sale.order.list.inherit.delivery.challan</field>
@@ -87,7 +87,7 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-<!--            <chatter position="attributes">-->
+            <!--            <chatter position="attributes">-->
             <chatter position="attributes">
                 <attribute name="invisible">1</attribute>
             </chatter>
@@ -128,6 +128,7 @@
                        decoration-warning="parformma_status == 'processed'"
                        decoration-danger="parformma_status == 'not_created'"
                        widget="badge"/>
+                <field name="manufacturing_type" invisible="1"/>
             </field>
             <button id="create_invoice" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -163,6 +164,7 @@
                 <field name="printing" column_invisible="1"/>
                 <field name="printing_note_id"/>
                 <field name="ply_option_id"/>
+                <field name="manufacturing_type" column_invisible="parent.manufacturing_type!='both'" required="True"/>
             </xpath>
             <xpath expr="//field[@name='order_line']//list//field[@name='price_unit']" position="attributes">
                 <attribute name="column_invisible">1</attribute>
@@ -195,13 +197,16 @@
                 <attribute name="sum">Total Order</attribute>
             </xpath>
             <xpath expr="//field[@name='order_line']//list" position="inside">
-                <button name="action_open_parformma_orders" type="object" class="btn btn-primary" string="Parformma" invisible="not parformma_order_id"/>
-                <button name="create_parforma_orders" type="object" class="btn btn-primary" string="Create Parformma" invisible="parformma_order_id"/>
+                <button name="action_open_parformma_orders" type="object" class="btn btn-primary" string="Parformma"
+                        invisible="not parformma_order_id"/>
+                <button name="create_parforma_orders" type="object" class="btn btn-primary" string="Create Parformma"
+                        invisible="parformma_order_id"/>
                 <field name="parformma_status"
                        decoration-success="parformma_status == 'done'"
                        decoration-info="parformma_status == 'created'"
                        decoration-warning="parformma_status == 'processed'"
                        decoration-danger="parformma_status == 'not_created'"
+                       force_save="True"
                        widget="badge"/>
             </xpath>
         </field>
