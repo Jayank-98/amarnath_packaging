@@ -23,3 +23,4 @@ class DispatchHistory(models.Model):
     quantity = fields.Float(string='Quantity')
     opening_qty = fields.Float(string='Opening Quantity')
     closing_qty = fields.Float(string='Closing Quantity')
+    order_ids = fields.Many2many("sale.order", string="Orders")

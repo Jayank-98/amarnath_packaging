@@ -6,12 +6,13 @@
         <field name="model">dispatch.history</field>
         <field name="arch" type="xml">
             <list create="false" edit="false" delete="false" default_order="id desc">
-                <field name="partner_id" width="25%"/>
-                <field name="product_id" width="25%"/>
+                <field name="partner_id" width="20%"/>
+                <field name="product_id" width="20%"/>
                 <field name="dispatch_date" width="13%"/>
                 <field name="opening_qty" width="13%"/>
                 <field name="quantity" width="12%"/>
                 <field name="closing_qty" width="13%"/>
+                <field name="order_ids" width="10%" class="text-wrap" widget="many2many_tags"/>
             </list>
         </field>
     </record>

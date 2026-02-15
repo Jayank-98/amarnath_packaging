@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="web_login_layout_inherited" inherit_id="web.login_layout" name="Login Layout">
+        <xpath expr="//div[@t-if='not disable_footer']" position="attributes">
+            <attribute name="class" add="d-none" remove="text-center small mt-4 pt-3 border-top"/>
+        </xpath>
+        <xpath expr="//div[hasclass('container')]" position="attributes">
+            <attribute name="class">container py-5 d-flex align-items-center justify-content-center min-vh-100</attribute>
+        </xpath>
+    </template>
+</odoo>

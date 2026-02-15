@@ -21,6 +21,18 @@ class ProcessOrder(models.Model):
                 vals['name'] = self.env['ir.sequence'].next_by_code('process.order') or '/'
         return super(ProcessOrder, self).create(vals_list)
 
+    def action_open_dispatch_pdf_wizard(self):
+        return {
+            'name': 'Dispatch History PDF',
+            'type': 'ir.actions.act_window',
+            'res_model': 'dispatch.history.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_process_order_id': self.id,
+            }
+        }
+
 
 class ProcessOrderLine(models.Model):
     """ This model represents process.order.line."""
@@ -98,12 +110,4 @@ class ProcessOrderLine(models.Model):
         action['name'] = f"{self.process_order_id.partner_id.name} - Dispatch History"
         action['target'] = 'new'
         action['context'] = {'search_default_group_partner': 0}
-        # action = {
-        #     'name': f"{self.process_order_id.name} - Dispatch History",
-        #     'type': 'ir.actions.act_window',
-        #     'view_mode': 'list',
-        #     'res_model': 'process.order.wizard',
-        #     'target': 'new',
-        #     'domain': [('process_line_id', '=', self.id)],
-        # }
         return action

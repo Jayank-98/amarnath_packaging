@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="dispatch_history_template">
+            <t t-call="web.external_layout">
+                <main>
+                    <div class="page">
+                        <!-- Heading -->
+                        <h2 style="text-align:center; font-weight: bolder;">
+                            Dispatch History -
+                            <t t-out="process_order.partner_id.name"/>
+                        </h2>
+                        <br/>
+
+                        <!-- Table -->
+                        <table class="table table-sm table-bordered" style="border: 1px solid black; width:100%;">
+                            <thead>
+                                <tr style="border: 1px solid black;">
+                                    <th style="width: 29%; font-weight: bold;" class="text-center">PRODUCT</th>
+                                    <th style="width: 19%; font-weight: bold;" class="text-center">DELIVERY DATE</th>
+                                    <th style="width: 17%; font-weight: bold;" class="text-center">ORDERED QTY</th>
+                                    <th style="width: 18%; font-weight: bold;" class="text-center">DELIVERED QTY</th>
+                                    <th style="width: 17%; font-weight: bold;" class="text-center">PENDING QTY</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <t t-foreach="docs" t-as="rec">
+                                    <tr>
+                                        <td class="text-center" style="width:29%; text-align:center; white-space:normal !important; word-wrap:break-word !important; word-break:break-word;">
+                                            <t t-out="rec.product_id.display_name"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <t t-out="rec.dispatch_date.strftime('%d/%m/%Y')"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <t t-out="rec.opening_qty"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <t t-out="rec.quantity"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <t t-out="rec.closing_qty"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </main>
+            </t>
+        </template>
+
+        <record id="dispatch_report_paperformat" model="report.paperformat">
+            <field name="name">Dispatch Report</field>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">50</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">10</field>
+            <field name="margin_right">10</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">50</field>
+            <field name="dpi">90</field>
+            <field name="css_margins" eval="True"/>
+        </record>
+
+
+        <record id="dispatch_history_pdf_report" model="ir.actions.report">
+            <field name="name">Dispatch History</field>
+            <field name="model">dispatch.history.wizard</field>
+            <field name="paperformat_id" ref="dispatch_report_paperformat"/>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">jm_delivery_challan.dispatch_history_template</field>
+            <field name="report_file">jm_delivery_challan.dispatch_history_template</field>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">'Dispatch Report'</field>
+        </record>
+    </data>
+</odoo>

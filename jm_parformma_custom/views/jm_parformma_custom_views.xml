@@ -105,17 +105,45 @@
                         </group>
                         <group string="Weight Details">
                             <group string="Top Wight">
-                                <field name="lwc_weight" readonly="1" force_save="1"/>
-                                <field name="total_lwc_weight" readonly="1" force_save="1"/>
+                                <label for="lwc_weight"/>
+                                <div name="lwc_weight_uom">
+                                    <field name="lwc_weight" class="oe_inline" readonly="1" force_save="1" style="max-width: 70px;"/>
+                                    <span name="uom_span"> gm</span>
+                                </div>
+                                <label for="total_lwc_weight"/>
+                                <div name="total_lwc_weight_uom">
+                                    <field name="total_lwc_weight" class="oe_inline" readonly="1" force_save="1" style="max-width: 70px;"/>
+                                    <span name="uom_span"> kg</span>
+                                </div>
                             </group>
                             <group string="Liner Weight">
-                                <field name="top_weight" readonly="1" force_save="1"/>
-                                <field name="bottom_weight" readonly="1" force_save="1"/>
-                                <field name="total_natural_weight" readonly="1" force_save="1"/>
+                                <label for="top_weight"/>
+                                <div name="top_weight_uom">
+                                    <field name="top_weight" class="oe_inline" readonly="1" force_save="1" style="max-width: 70px;"/>
+                                    <span name="uom_span"> gm</span>
+                                </div>
+                                <label for="bottom_weight"/>
+                                <div name="bottom_weight_uom">
+                                    <field name="bottom_weight" class="oe_inline" readonly="1" force_save="1" style="max-width: 70px;"/>
+                                    <span name="uom_span"> gm</span>
+                                </div>
+                                <label for="total_natural_weight"/>
+                                <div name="total_natural_weight_uom">
+                                    <field name="total_natural_weight" class="oe_inline" readonly="1" force_save="1" style="max-width: 70px;"/>
+                                    <span name="uom_span"> kg</span>
+                                </div>
                             </group>
                             <group string="Total Weight">
-                                <field name="per_box_weight" readonly="1" force_save="1"/>
-                                <field name="total_weight" readonly="1" force_save="1"/>
+                                <label for="per_box_weight"/>
+                                <div name="per_box_weight_uom">
+                                    <field name="per_box_weight" class="oe_inline" readonly="1" force_save="1" style="max-width: 70px;"/>
+                                    <span name="uom_span"> gm</span>
+                                </div>
+                                <label for="total_weight"/>
+                                <div name="total_weight_uom">
+                                    <field name="total_weight" class="oe_inline" readonly="1" force_save="1" style="max-width: 70px;"/>
+                                    <span name="uom_span"> kg</span>
+                                </div>
                             </group>
                         </group>
 

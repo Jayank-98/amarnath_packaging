@@ -28,6 +28,7 @@ class ProcessOrderWizard(models.TransientModel):
         for record in self:
             if record.quantity > record.max_quantity:
                 raise UserError("Quantity Can't be more than Maximum Quantity.!")
+            order_ids = []
             if record.process_line_id:
                 record.process_line_id.write({
                     'delivered_quantity':
@@ -50,16 +51,22 @@ class ProcessOrderWizard(models.TransientModel):
                         so_line.qty_delivered += pending
                         remaining -= pending
                         so_line.pending_qty = 0
+                        if so_line.order_id.id not in order_ids:
+                            order_ids.append(so_line.order_id.id)
                     else:
                         # partially fill
                         so_line.qty_delivered += remaining
                         so_line.pending_qty = pending - remaining
                         remaining = 0
+                        if so_line.order_id.id not in order_ids:
+                            order_ids.append(so_line.order_id.id)
 
                     # Make sure qty_delivered never exceeds ordered qty
                     if so_line.qty_delivered > so_line.product_uom_qty:
                         so_line.qty_delivered = so_line.product_uom_qty
                         so_line.pending_qty = 0
+                        if so_line.order_id.id not in order_ids:
+                            order_ids.append(so_line.order_id.id)
             # ============================
             # CREATE DISPATCH HISTORY HERE
             # ============================
@@ -70,5 +77,6 @@ class ProcessOrderWizard(models.TransientModel):
                 "quantity": record.quantity,
                 "opening_qty": record.max_quantity,
                 "closing_qty": record.max_quantity - record.quantity,
+                "order_ids": order_ids
             })
         return True

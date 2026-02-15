@@ -3,6 +3,15 @@ from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 import re
 
+def _parse_gsm_value(gsm):
+    """Extract numeric GSM value from string like '230/10' safely."""
+    if not gsm:
+        return 0.0
+    try:
+        return float(str(gsm).split('/')[0])
+    except (ValueError, IndexError):
+        return 0.0
+
 
 class ParffomaOrder(models.Model):
     _name = 'parffoma.order'
@@ -93,11 +102,11 @@ class ParffomaOrder(models.Model):
                     ) % (field_name.upper(), value))
 
     # ✅ Validation: only allow digits and "/"
-    @api.onchange('b_value', 'h_value', 'l_value', 'f_value')
+    @api.onchange('b_value', 'h_value', 'l_value', 'f_value', 'top_paper_gsm', 'top_liner_gsm', 'bottom_liner_gsm')
     def _onchange_dimension_values(self):
         pattern = re.compile(r'^[0-9/]*$')
         for rec in self:
-            for field_name in ['b_value', 'h_value', 'l_value', 'f_value']:
+            for field_name in ['b_value', 'h_value', 'l_value', 'f_value', 'top_paper_gsm', 'top_liner_gsm', 'bottom_liner_gsm']:
                 value = getattr(rec, field_name)
                 if value and not pattern.match(value):
                     raise ValidationError(_("Field '%s' may only contain numbers and"
@@ -112,30 +121,94 @@ class ParffomaOrder(models.Model):
     @api.onchange('paper_id', 'box_per_sheet', 'box_qty')
     def _onchange_paper_id(self):
         for rec in self:
-            if rec.paper_id and self.env.context.get('update_paper_details', False):
-                rec.box_per_sheet = rec.paper_id.box_per_sheet
-                rec.paper_decal = rec.paper_id.paper_decal
-                rec.paper_cutting = rec.paper_id.paper_cutting
-                rec.top_paper_gsm = rec.paper_id.top_paper_gsm
-                rec.top_liner_gsm = rec.paper_id.top_liner_gsm
-                rec.bottom_liner_gsm = rec.paper_id.bottom_liner_gsm
-                rec.top_paper_color = rec.paper_id.top_paper_color
-                rec.top_liner_color = rec.paper_id.top_liner_color
-                rec.bottom_liner_color = rec.paper_id.bottom_liner_color
-            rec.top_paper_qty = rec.box_qty / rec.box_per_sheet
-            rec.top_liner_qty = rec.box_qty / rec.box_per_sheet
-            rec.bottom_liner_qty = rec.box_qty / rec.box_per_sheet
+            paper = rec.paper_id
 
+            # Populate paper details from master
+            if paper and self.env.context.get('update_paper_details'):
+                rec.update({
+                    'box_per_sheet': paper.box_per_sheet,
+                    'paper_decal': paper.paper_decal,
+                    'paper_cutting': paper.paper_cutting,
+                    'top_paper_gsm': paper.top_paper_gsm,
+                    'top_liner_gsm': paper.top_liner_gsm,
+                    'bottom_liner_gsm': paper.bottom_liner_gsm,
+                    'top_paper_color': paper.top_paper_color,
+                    'top_liner_color': paper.top_liner_color,
+                    'bottom_liner_color': paper.bottom_liner_color,
+                })
 
-    @api.onchange('paper_decal', 'paper_cutting', 'top_paper_gsm', 'bottom_liner_gsm', 'box_qty', 'box_per_sheet', 'top_paper_qty', 'bottom_liner_qty')
+            # Quantity calculation with safety
+            box_per_sheet = rec.box_per_sheet or 0
+            box_qty = rec.box_qty or 0
+
+            if box_per_sheet:
+                qty = box_qty / box_per_sheet
+            else:
+                qty = 0
+
+            rec.top_paper_qty = qty
+            rec.top_liner_qty = qty
+            rec.bottom_liner_qty = qty
+
+    @api.onchange(
+        'paper_decal', 'paper_cutting',
+        'top_paper_gsm', 'bottom_liner_gsm', 'top_liner_gsm',
+        'box_qty', 'box_per_sheet',
+        'top_paper_qty', 'bottom_liner_qty', 'top_liner_qty'
+    )
     def _onchange_paper_details(self):
         for rec in self:
-            if rec.paper_id:
-                temp_weight = rec.paper_decal * rec.paper_cutting / rec.paper_id.formula
-                rec.lwc_weight = temp_weight * float(rec.paper_id.top_paper_gsm.split('/')[0]) if rec.paper_id.top_paper_gsm else 0
-                rec.bottom_weight = temp_weight  * float(rec.paper_id.bottom_liner_gsm.split('/')[0]) if rec.paper_id.bottom_liner_gsm else 0
-                rec.top_weight = temp_weight  * float(rec.paper_id.top_liner_gsm.split('/')[0]) * 1.4 if rec.paper_id.top_liner_gsm else 0
-                rec.per_box_weight = (rec.lwc_weight + rec.top_weight + rec.bottom_weight) / rec.box_per_sheet
-                rec.total_lwc_weight = rec.lwc_weight * rec.top_paper_qty / 1000
-                rec.total_natural_weight = (rec.bottom_weight+ rec.top_weight) * rec.bottom_liner_qty / 1000
-                rec.total_weight = rec.per_box_weight * rec.box_qty / 1000
+            paper = rec.paper_id
+            if not paper:
+                pass
+
+            try:
+                # Safe base values
+                paper_decal = rec.paper_decal or 0
+                paper_cutting = rec.paper_cutting or 0
+                formula = paper.formula or 1  # avoid division by zero
+                box_per_sheet = rec.box_per_sheet or 0
+                box_qty = rec.box_qty or 0
+
+                top_qty = rec.top_paper_qty or 0
+                top_liner_qty = rec.top_liner_qty or 0
+                bottom_qty = rec.bottom_liner_qty or 0
+
+                # GSM numeric extraction
+                top_paper_gsm = _parse_gsm_value(rec.top_paper_gsm)
+                bottom_liner_gsm = _parse_gsm_value(rec.bottom_liner_gsm)
+                top_liner_gsm = _parse_gsm_value(rec.top_liner_gsm)
+
+                # Base weight
+                temp_weight = (paper_decal * paper_cutting) / formula if formula else 0
+
+                # Weight calculations
+                rec.lwc_weight = temp_weight * top_paper_gsm if top_paper_gsm and top_qty else 0
+                rec.bottom_weight = temp_weight * bottom_liner_gsm if bottom_liner_gsm and bottom_qty else 0
+                rec.top_weight = temp_weight * top_liner_gsm * 1.4 if top_liner_qty and top_liner_gsm else 0
+
+                total_weight_per_sheet = (
+                        rec.lwc_weight + rec.top_weight + rec.bottom_weight
+                )
+
+                rec.per_box_weight = (
+                    total_weight_per_sheet / box_per_sheet
+                    if box_per_sheet else 0
+                )
+
+                rec.total_lwc_weight = (rec.lwc_weight * top_qty) / 1000
+                rec.total_natural_weight =\
+                    ((rec.bottom_weight + rec.top_weight) * max(bottom_qty, top_liner_qty)) / 1000
+                rec.total_weight = (rec.per_box_weight * box_qty) / 1000
+
+            except Exception:
+                # Fail-safe reset (prevents UI crash)
+                rec.update({
+                    'lwc_weight': 0,
+                    'bottom_weight': 0,
+                    'top_weight': 0,
+                    'per_box_weight': 0,
+                    'total_lwc_weight': 0,
+                    'total_natural_weight': 0,
+                    'total_weight': 0,
+                })

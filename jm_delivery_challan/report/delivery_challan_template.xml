@@ -7,8 +7,8 @@
                     <div class="page" style=" page-break-before:always;">
                         <div style="border:1px solid black; width:100%; text-align:center; background-color:#f0f0f0;">
                             <h1 style="padding-top:15px;">
-<!--                                <span t-esc="picking.company_id.name"/>-->
-                                SQUARE PACKAGING
+                                <span t-esc="picking.company_id.name"/>
+<!--                                SQUARE PACKAGING-->
                             </h1>
                         </div>
                         <div style="border:1px solid black; width:100%; text-align:center; height:85px; font-size: 1 rem;">
