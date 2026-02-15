@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_parformma_custom_user,access.parformma.custom.user,model_parffoma_order,base.group_user,1,1,1,1
 jm_parformma_custom.access_paper_type,access_paper_type,jm_parformma_custom.model_paper_type,base.group_user,1,1,1,1
+jm_parformma_custom.access_printing_note,access_printing_note,jm_parformma_custom.model_printing_note,base.group_user,1,1,1,1
+jm_parformma_custom.access_ply_options_user,access.ply.options.user,jm_parformma_custom.model_ply_options,base.group_user,1,1,1,1

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="res_config_settings_view_dp_support" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.dp.support</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@name='performance']" position="after">
+                <block title="Company Configurations" groups="base.group_no_one" name="company_type_configuration_block">
+                    <setting id="company_type_configuration" help="Manufacturing Type">
+                        <field name="manufacturing_type"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -81,7 +81,7 @@ class SaleOrder(models.Model):
             for line in order.order_line:
                 parformma_order_id = self.env['parffoma.order'].create({
                     'company_name': order.partner_id.id,
-                    'product_name': line.product_id.name,
+                    'product_id': line.product_id.id if line.product_id else False,
                     'printing': line.printing_note_id.name if line.printing_note_id else '',
                     'date': order.date_order,
                     'box_qty': line.product_uom_qty,
@@ -225,14 +225,14 @@ class SaleOrderLine(models.Model):
             order = line.order_id
             parformma_order_id = self.env['parffoma.order'].create({
                 'company_name': order.partner_id.id,
-                'product_name': line.product_id.name,
-                'printing': line.printing_note_id.name if line.printing_note_id else '',
+                'product_id': line.product_id.id if line.product_id else False,
+                'printing_note_id': line.printing_note_id.id if line.printing_note_id else '',
                 'date': order.date_order,
                 'box_qty': line.product_uom_qty,
                 'top_paper_qty': line.product_uom_qty,
                 'top_liner_qty': line.product_uom_qty,
                 'bottom_liner_qty': line.product_uom_qty,
-                'ply_type': line.ply_option_id.name,
+                'ply_option_id': line.ply_option_id.id if line.ply_option_id else False,
                 'sale_order_line_id': line.id,
                 'sale_order_id': order.id,
                 'company_id': order.company_id.id,

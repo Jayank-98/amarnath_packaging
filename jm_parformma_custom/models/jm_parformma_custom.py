@@ -30,8 +30,9 @@ class ParffomaOrder(models.Model):
         tracking=True,
         required=True
     )
-    product_name = fields.Char(string='Product Name', tracking=True, required=True)
+    product_id = fields.Many2one("product.product", string='Product', tracking=True)
     printing = fields.Char(string='Printing', tracking=True)
+    printing_note_id = fields.Many2one('printing.note', string='Printing Note', tracking=True)
     box_qty = fields.Integer(string='Box Quantity', tracking=True)
 
     # Dimensions
@@ -53,7 +54,7 @@ class ParffomaOrder(models.Model):
     top_liner_gsm = fields.Char(string='Top Liner GSM/BF', tracking=True)
 
     note = fields.Text(string='Note', tracking=True)
-    ply_type = fields.Char(string='Ply Type', tracking=True)
+    ply_option_id = fields.Many2one("ply.options", string='Ply Options')
 
     # Example computed field: full description
     full_description = fields.Text(
@@ -73,13 +74,29 @@ class ParffomaOrder(models.Model):
     total_lwc_weight = fields.Float(string="Total Top Weight", tracking=True)
     total_natural_weight = fields.Float(string="Total Liner Weight", tracking=True)
     box_per_sheet = fields.Float(string='Box Per Sheet', tracking=True)
+    manufacturing_type = fields.Selection([
+        ('single_liner', 'Single Liner'),
+        ('double_liner', 'Double Liner'),
+        ('both', 'Both')], string='Manufacturing Type')
 
-    @api.depends('company_name', 'product_name', 'order_no')
+    @api.model
+    def default_get(self, fields):
+        """If we're creating a new account through a many2one, there are chances that we typed the account code
+        instead of its name. In that case, switch both fields values.
+        """
+
+        defaults = super(ParffomaOrder, self).default_get(fields)
+        if 'manufacturing_type' in fields:
+           default_manufacturing_type = self.env['ir.config_parameter'].sudo().get_param('jm_parformma_custom.manufacturing_type')
+           defaults['manufacturing_type'] = default_manufacturing_type
+        return defaults
+
+    @api.depends('company_name', 'product_id', 'order_no')
     def _compute_full_description(self):
         for rec in self:
             rec.full_description = (
                 f"{rec.company_name.name or ''}"
-                f" - {rec.product_name or ''} ({rec.order_no or ''})")
+                f" - {rec.product_id.name if rec.product_id else ''} ({rec.order_no or ''})")
 
     @api.model_create_multi
     def create(self, vals_list):

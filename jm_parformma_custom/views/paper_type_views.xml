@@ -11,13 +11,13 @@
             <list string="Paper Types">
                 <field name="name"/>
                 <field name="top_paper_color"/>
-                <field name="top_liner_color"/>
+                <field name="top_liner_color" optional="hide"/>
                 <field name="bottom_liner_color"/>
+                <field name="top_paper_gsm"/>
+                <field name="top_liner_gsm" optional="hide"/>
+                <field name="bottom_liner_gsm"/>
                 <field name="paper_decal"/>
                 <field name="paper_cutting"/>
-                <field name="top_paper_gsm"/>
-                <field name="top_liner_gsm"/>
-                <field name="bottom_liner_gsm"/>
                 <field name="box_per_sheet"/>
             </list>
         </field>
@@ -37,15 +37,16 @@
                     </group>
                     <group>
                         <group>
+                            <field name="manufacturing_type" invisible="1"/>
                             <field name="top_paper_color"/>
-                            <field name="top_liner_color"/>
+                            <field name="top_liner_color" invisible="manufacturing_type=='single_liner'"/>
                             <field name="bottom_liner_color"/>
                             <field name="paper_decal"/>
                             <field name="paper_cutting"/>
                         </group>
                         <group>
                             <field name="top_paper_gsm"/>
-                            <field name="top_liner_gsm"/>
+                            <field name="top_liner_gsm" invisible="manufacturing_type=='single_liner'"/>
                             <field name="bottom_liner_gsm"/>
                             <field name="box_per_sheet"/>
                             <field name="formula"/>

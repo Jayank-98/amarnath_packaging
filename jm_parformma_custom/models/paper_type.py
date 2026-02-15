@@ -22,6 +22,18 @@ class PaperType(models.Model):
 
     box_per_sheet = fields.Float(string='Box/Sheet', tracking=True)
     formula = fields.Float(string='Formula', default=1550.00, tracking=True)
+    manufacturing_type = fields.Selection([
+        ('single_liner', 'Single Liner'),
+        ('double_liner', 'Double Liner'),
+        ('both', 'Both')], string='Manufacturing Type')
+
+    @api.model
+    def default_get(self, fields):
+        defaults = super(PaperType, self).default_get(fields)
+        if 'manufacturing_type' in fields:
+           default_manufacturing_type = self.env['ir.config_parameter'].sudo().get_param('jm_parformma_custom.manufacturing_type')
+           defaults['manufacturing_type'] = default_manufacturing_type
+        return defaults
 
     @api.constrains('bottom_liner_gsm', 'top_paper_gsm')
     def _check_dimension_values(self):

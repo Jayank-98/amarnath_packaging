@@ -10,10 +10,10 @@
                     <field name="date"/>
                     <field name="order_no"/>
                     <field name="company_name"/>
-                    <field name="product_name"/>
+                    <field name="product_id"/>
                     <field name="box_qty" string="Box Qty."/>
-                    <field name="printing"/>
-                    <field name="ply_type"/>
+                    <field name="printing_note_id"/>
+                    <field name="ply_option_id"/>
                 </list>
             </field>
         </record>
@@ -26,7 +26,7 @@
                 <search string="Parffoma Orders">
                     <field name="order_no"/>
                     <field name="company_name"/>
-                    <field name="product_name"/>
+                    <field name="product_id"/>
                 </search>
             </field>
         </record>
@@ -53,13 +53,14 @@
                         <group>
                             <group>
                                 <field name="company_name"/>
-                                <field name="product_name"/>
-                                <field name="printing"/>
+                                <field name="product_id"/>
+                                <field name="printing_note_id"/>
+                                <field name="manufacturing_type"/>
                             </group>
                             <group>
                                 <field name="date"/>
                                 <field name="box_qty"/>
-                                <field name="ply_type"/>
+                                <field name="ply_option_id"/>
                             </group>
                         </group>
 
@@ -81,7 +82,7 @@
                             </group>
                             <group>
                                 <field name="top_paper_color" force_save="1"/>
-                                <field name="top_liner_color" force_save="1"/>
+                                <field name="top_liner_color" force_save="1"  invisible="manufacturing_type=='single_liner'"/>
                                 <field name="bottom_liner_color" force_save="1"/>
                             </group>
                             <group>
@@ -94,12 +95,12 @@
                         <group>
                             <group>
                                 <field name="top_paper_qty"/>
-                                <field name="top_liner_qty"/>
+                                <field name="top_liner_qty" invisible="manufacturing_type=='single_liner'"/>
                                 <field name="bottom_liner_qty"/>
                             </group>
                             <group>
                                 <field name="top_paper_gsm"/>
-                                <field name="top_liner_gsm"/>
+                                <field name="top_liner_gsm" invisible="manufacturing_type=='single_liner'"/>
                                 <field name="bottom_liner_gsm"/>
                             </group>
                         </group>
@@ -117,8 +118,8 @@
                                 </div>
                             </group>
                             <group string="Liner Weight">
-                                <label for="top_weight"/>
-                                <div name="top_weight_uom">
+                                <label for="top_weight" invisible="manufacturing_type=='single_liner'"/>
+                                <div name="top_weight_uom" invisible="manufacturing_type=='single_liner'">
                                     <field name="top_weight" class="oe_inline" readonly="1" force_save="1" style="max-width: 70px;"/>
                                     <span name="uom_span"> gm</span>
                                 </div>

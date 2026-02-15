@@ -21,7 +21,7 @@ class JmParformaaCustom(models.Model):
 
     @api.onchange(
         'order_no', 'date', 'company_id',
-        'company_name', 'product_name', 'printing',
+        'company_name', 'product_id', 'printing',
         'box_qty', 'b_value', 'h_value',
         'l_value', 'f_value', 'paper_decal',
         'paper_cutting', 'top_paper_qty', 'top_paper_gsm',
@@ -29,11 +29,11 @@ class JmParformaaCustom(models.Model):
     def _onchange_parformma_status(self):
         BASIC_FIELDS = {
             'order_no', 'date', 'company_id', 'company_name',
-            'product_name', 'box_qty'
+            'product_id', 'box_qty'
         }
 
         ALL_FIELDS = {
-            'order_no', 'date', 'company_id', 'company_name', 'product_name',
+            'order_no', 'date', 'company_id', 'company_name', 'product_id',
             'printing', 'box_qty', 'b_value', 'h_value', 'l_value', 'f_value',
             'paper_decal', 'paper_cutting',
             'top_paper_qty', 'top_paper_gsm',

@@ -10,7 +10,7 @@
     'author': 'Jayank M Aghara',
     'company': 'Aarooha Tech Labs',
     'maintainer': 'Aarooha Tech Labs',
-    'depends': ['base', 'mail'],
+    'depends': ['base', 'mail', 'product'],
     'data': [
         'data/ir_sequence.xml',
         'security/ir.model.access.csv',
@@ -19,6 +19,7 @@
 		'views/res_partner_views.xml',
 		'views/paper_type_views.xml',
 		'views/web_templates.xml',
+		'views/res_config_settings_views.xml',
     ],
     'license': 'LGPL-3',
     'installable': True,
